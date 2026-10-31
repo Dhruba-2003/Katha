@@ -1,26 +1,125 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+@theme {
+  --font-sans: var(--font-archivo), ui-sans-serif, system-ui, -apple-system, sans-serif;
+  --font-display: var(--font-archivo), ui-sans-serif, system-ui, sans-serif;
+  --font-brand: var(--font-playfair), Georgia, "Times New Roman", serif;
+
+  /* Brand palette */
+  --color-katha-pink: #ff3d8f;
+  --color-katha-pink-soft: #ff7ab0;
+  --color-katha-violet: #b14bff;
+  --color-katha-maroon: #2a0a1f;
+  --color-katha-maroon-soft: #3d1130;
+  --color-katha-ink: #05050a;
+  --color-katha-gold: #c8a93a;
+  --color-katha-muted: #8f8794;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
+@layer base {
+  * {
+    -webkit-tap-highlight-color: transparent;
+  }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    background-color: #000;
+    color: #fff;
+    overflow-x: hidden;
+  }
+
+  ::selection {
+    background: rgba(255, 61, 143, 0.35);
+    color: #fff;
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+@utility text-gradient-pink {
+  background-image: linear-gradient(100deg, #ff3d8f 0%, #ff5fa2 45%, #c14bff 100%);
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+}
+
+@utility text-gradient-violet-pink {
+  /* violet -> pink headline gradient (horizontal, matching reference) */
+  background-image: linear-gradient(90deg, #B54AFF 0%, #FFEBF1 50%, #F42464 75%);
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+}
+
+@utility no-scrollbar {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+@utility mask-fade-right {
+  mask-image: linear-gradient(to right, #000 0%, #000 35%, transparent 70%);
+  -webkit-mask-image: linear-gradient(to right, #000 0%, #000 35%, transparent 70%);
+}
+
+@utility mask-fade-both {
+  mask-image: linear-gradient(
+    to right,
+    transparent 0%,
+    #000 8%,
+    #000 92%,
+    transparent 100%
+  );
+  -webkit-mask-image: linear-gradient(
+    to right,
+    transparent 0%,
+    #000 8%,
+    #000 92%,
+    transparent 100%
+  );
+}
+
+/* Soft grain / vignette overlay used on the dark panels */
+@utility panel-sheen {
+  background-image:
+    radial-gradient(120% 90% at 12% 0%, rgba(120, 20, 80, 0.55) 0%, transparent 55%),
+    radial-gradient(80% 60% at 90% 10%, rgba(90, 30, 120, 0.3) 0%, transparent 60%),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.035) 0%, rgba(255, 255, 255, 0) 40%);
+}
+
+@keyframes katha-drift {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+  50% {
+    transform: translate3d(0, -14px, 0) scale(1.03);
+  }
+}
+
+@utility animate-drift {
+  animation: katha-drift 9s ease-in-out infinite;
+}
+
+@keyframes katha-marquee {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+@utility animate-marquee {
+  animation: katha-marquee 42s linear infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-drift,
+  .animate-marquee {
+    animation: none !important;
+  }
 }
