@@ -1,3 +1,6 @@
+"use client";
+
+import { useState } from "react";
 import Image from "next/image";
 import Assets from "@/assets/Assets";
 import SectionBadge from "@/components/ui/SectionBadge";
@@ -11,38 +14,41 @@ const REVIEWS = [
     text: "This app has become a part of my daily routine. The characters are so engaging and the UI is incredibly smooth. Highly recommended!",
   },
   {
-    name: "Fatima",
-    date: "02 Jan 2026",
-    text: "This app has become a part of my daily routine. The characters are so engaging and the UI is incredibly smooth. Highly recommended!",
+    name: "Aarav",
+    date: "03 Jan 2026",
+    text: "An absolute masterpiece in storytelling. Conversations feel genuinely human and unpredictable in the best way possible.",
   },
   {
-    name: "Fatima",
-    date: "02 Jan 2026",
-    text: "This app has become a part of my daily routine. The characters are so engaging and the UI is incredibly smooth. Highly recommended!",
+    name: "Priya",
+    date: "04 Jan 2026",
+    text: "The voice and memory features make every session so immersive. Truly feels like starring in your own drama series.",
   },
   {
-    name: "Fatima",
-    date: "02 Jan 2026",
-    text: "This app has become a part of my daily routine. The characters are so engaging and the UI is incredibly smooth. Highly recommended!",
+    name: "Rohan",
+    date: "05 Jan 2026",
+    text: "Stunning visuals and incredible depth in characters. I spend hours exploring different show scenarios every single day.",
   },
   {
-    name: "Fatima",
-    date: "02 Jan 2026",
-    text: "This app has become a part of my daily routine. The characters are so engaging and the UI is incredibly smooth. Highly recommended!",
+    name: "Neha",
+    date: "06 Jan 2026",
+    text: "Clean UI, phenomenal AI responsiveness, and an overall polished experience. 10/10 would recommend to everyone.",
   },
 ];
 
 export default function ReviewsSection() {
+  const [hoveredIndex, setHoveredIndex] = useState(null);
+  const duplicatedReviews = [...REVIEWS, ...REVIEWS, ...REVIEWS];
+
   return (
     <section
       id="reviews"
       className="relative w-full bg-black pb-28 overflow-hidden"
     >
-      <div className="absolute hidden sm:block top-0 left-0 w-full h-full">
-        <Image src={Assets.ReviewsBg} alt="" className="" />
+      <div className="absolute hidden sm:block top-0 left-0 w-full h-full pointer-events-none">
+        <Image src={Assets.ReviewsBg} alt="" className="w-full h-full object-cover" />
       </div>
-      <div className="absolute sm:hidden top-0 left-0 w-full h-full">
-        <Image src={Assets.ReviewsBgMobile} alt="" className="w-full h-auto" />
+      <div className="absolute sm:hidden top-0 left-0 w-full h-full pointer-events-none">
+        <Image src={Assets.ReviewsBgMobile} alt="" className="w-full h-auto object-cover" />
       </div>
 
       <div className="relative mt-12 sm:mt-10 px-5 text-center md:px-16 lg:px-24 xl:px-40 2xl:px-60">
@@ -107,13 +113,17 @@ export default function ReviewsSection() {
         </div>
       </div>
 
-      {/* ---------- review rail with mobile swipe ---------- */}
-      <div className="mask-fade-both mt-16 sm:mt-14 w-full overflow-x-auto sm:overflow-hidden no-scrollbar ">
-        <div className="flex w-max gap-4 sm:gap-5 px-6 sm:px-12 snap-x snap-mandatory">
-          {REVIEWS.map((review, i) => (
+      {/* ---------- continuous auto-scrolling marquee rail for reviews ---------- */}
+      <div 
+        className="mask-fade-both mt-16 sm:mt-14 w-full overflow-hidden py-4"
+      >
+        <div 
+          className="flex w-max gap-4 sm:gap-6 animate-marquee hover:[animation-play-state:paused]"
+        >
+          {duplicatedReviews.map((review, i) => (
             <article
               key={i}
-              className="w-[320px] sm:w-[320px] shrink-0 rounded-[16px] border border-white/10 bg-linear-to-b from-[#351426]/75 via-[#21151c]/70 to-[#171617]/80 backdrop-blur-xl py-5 px-6 sm:py-6 sm:px-8 shadow-[0_10px_30px_rgba(0,0,0,0.5)] translate-x-0 lg:-translate-x-16 snap-center"
+              className="w-[320px] sm:w-[340px] shrink-0 rounded-[16px] border border-white/10 bg-linear-to-b from-[#351426]/75 via-[#21151c]/70 to-[#171617]/80 backdrop-blur-xl py-5 px-6 sm:py-6 sm:px-8 shadow-[0_10px_30px_rgba(0,0,0,0.5)] transition-all duration-300 ease-out hover:scale-[1.03] hover:border-white/30 cursor-pointer"
             >
               <div className="flex items-center gap-3 sm:gap-2.5">
                 <Image
