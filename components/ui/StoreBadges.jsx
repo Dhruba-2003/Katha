@@ -1,4 +1,4 @@
-import { Apple, PlayStore } from "@/components/icons/Icons";
+import { Icon } from "@iconify/react";
 
 export default function StoreBadges({ className = "", tone = "dark", size = "md" }) {
   const shell =
@@ -18,7 +18,7 @@ export default function StoreBadges({ className = "", tone = "dark", size = "md"
           lg ? "h-[60px] gap-2 rounded-lg pl-2.5 pr-4" : "h-[46px] gap-1 rounded-md pl-2 pr-3"
         } ${shell} hover:opacity-90`}
       >
-        <PlayStore className={lg ? "h-[40px] w-[40px] shrink-0" : "h-[32px] w-[32px] shrink-0"} />
+        <Icon icon="logos:google-play-icon" className={lg ? "h-[36px] w-[36px] shrink-0" : "h-[28px] w-[28px] shrink-0"} />
         <span className="flex flex-col leading-none">
           <span
             className={`font-light tracking-[0.01em] uppercase opacity-90 ${
@@ -45,7 +45,7 @@ export default function StoreBadges({ className = "", tone = "dark", size = "md"
           lg ? "h-[60px] gap-2.5 rounded-lg pl-2.5 pr-4" : "h-[46px] gap-2.5 rounded-md pl-2 pr-3"
         } ${shell} hover:opacity-90`}
       >
-        <Apple className={lg ? "h-[40px] w-[40px] shrink-0" : "h-[32px] w-[32px] shrink-0"} />
+        <Icon icon="ic:baseline-apple" className={lg ? "h-[40px] w-[40px] shrink-0" : "h-[32px] w-[32px] shrink-0"} />
         <span className="flex flex-col leading-none">
           <span
             className={`font-light tracking-[0.01em] uppercase opacity-90 ${

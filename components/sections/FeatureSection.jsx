@@ -1,6 +1,5 @@
 import Image from "next/image";
 import Assets from "@/assets/Assets";
-import { Sparkle } from "../icons/Icons";
 import Glowbtn from "../buttons/Glowbtn";
 
 const TAGS = [
@@ -236,7 +235,7 @@ export default function FeatureSection() {
                   ))}
                 </div>
 
-                <RememberYou className="relative z-10 mt-10 sm:mt-6" />
+                <RememberYou className="relative z-10 mt-10 sm:mt-0" />
               </div>
             </div>
           </div>

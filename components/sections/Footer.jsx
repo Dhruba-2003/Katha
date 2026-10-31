@@ -1,6 +1,6 @@
 import Link from "next/link";
 import Logo from "@/components/ui/Logo";
-import { LinkedIn, XIcon } from "@/components/icons/Icons";
+import { Icon } from "@iconify/react";
 
 const LINKS = [
   { label: "Privacy", href: "#privacy" },
@@ -48,14 +48,14 @@ export default function Footer() {
                 aria-label="Follow Katha on X"
                 className="flex h-9 w-9 items-center justify-center rounded-lg bg-white text-black transition-transform hover:scale-105"
               >
-                <XIcon className="h-[16px] w-[16px]" />
+                <Icon icon="ri:twitter-x-fill" className="h-[16px] w-[16px]" />
               </a>
               <a
                 href="#linkedin"
                 aria-label="Follow Katha on LinkedIn"
                 className="flex h-9 w-9 items-center justify-center rounded-lg bg-[#0a66c2] text-white transition-transform hover:scale-105"
               >
-                <LinkedIn className="h-[16px] w-[16px]" />
+                <Icon icon="ri:linkedin-fill" className="h-[16px] w-[16px]" />
               </a>
             </div>
           </div>

@@ -8,7 +8,7 @@ import Image from "next/image";
 export default function Navbar({ className = "" }) {
   const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
-  const downloadLink = process.env.NEXT_PUBLIC_DOWNLOAD_LINK || "https://heykatha.com";
+  const downloadLink = process.env.NEXT_PUBLIC_DOWNLOAD_LINK || "https://playkatha.com";
 
   useEffect(() => {
     const handleScroll = () => {
@@ -26,7 +26,7 @@ export default function Navbar({ className = "" }) {
     <nav
       className={`fixed top-4 left-6 right-6 z-50 mx-auto max-w-[1400px] flex items-center justify-between rounded-full border transition-all duration-300 pr-3 pl-5 py-2 sm:py-0 sm:h-[72px] sm:pr-4 sm:pl-10 mx-4 sm:mx-6 md:mx-16 lg:mx-24 xl:mx-48  ${
         scrolled
-          ? "border-white/25 bg-black/75 backdrop-blur-2xl shadow-[0_10px_40px_rgba(0,0,0,0.8)]"
+          ? "border-white/25 bg-black/35 backdrop-blur-2xl shadow-[0_10px_40px_rgba(0,0,0,0.8)]"
           : "border-white/15 bg-white/[0.04] backdrop-blur-xl shadow-[0_8px_32px_rgba(0,0,0,0.4)]"
       } ${className}`}
     >

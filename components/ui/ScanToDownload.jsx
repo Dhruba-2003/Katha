@@ -4,7 +4,7 @@ import Image from "next/image";
 import Assets from "@/assets/Assets";
 
 export default function ScanToDownload({ className = "" }) {
-  const downloadLink = process.env.NEXT_PUBLIC_DOWNLOAD_LINK || "https://heykatha.com";
+  const downloadLink = process.env.NEXT_PUBLIC_DOWNLOAD_LINK || "https://playkatha.com";
 
   return (
     <aside

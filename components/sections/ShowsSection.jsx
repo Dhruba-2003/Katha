@@ -2,7 +2,6 @@ import Image from "next/image";
 import Assets from "@/assets/Assets";
 import SectionBadge from "@/components/ui/SectionBadge";
 import StoreBadges from "@/components/ui/StoreBadges";
-import { Sparkle } from "../icons/Icons";
 import Glowbtn from "../buttons/Glowbtn";
 
 export default function ShowsSection() {
@@ -41,9 +40,12 @@ export default function ShowsSection() {
             </span>
           </h2>
 
-          <p className="mt-5 sm:mt-3 max-w-[80%] text-[18px] leading-[1.2] text-white/65 sm:max-w-[420px] sm:text-[14px] lg:max-w-[100%]">
-            Each show puts you in a role, surrounds you with AI characters
-            <span className="hidden sm:block">
+          <p className="mt-5 hidden sm:block sm:mt-3 max-w-[80%] text-[18px] leading-[1.2] text-white/65 sm:max-w-[420px] sm:text-[14px] lg:max-w-[80%]">
+            Each show puts you in a role, surrounds you with AI characters and lets the story unfold through conversation.
+          </p>
+
+          <p className="mt-5 sm:hidden sm:mt-3 max-w-[80%] text-[18px] leading-[1.2] text-white/65 sm:max-w-[420px] sm:text-[14px] lg:max-w-[80%]">
+            Each show puts you in a role, surrounds you with AI characters <span className="hidden sm:inline-block">
               , and lets the story unfold through conversation.
             </span>
           </p>

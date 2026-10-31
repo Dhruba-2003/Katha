@@ -6,6 +6,8 @@
 # Testing
 /coverage
 
+.trae/
+
 # Next.js
 /.next/
 /out/

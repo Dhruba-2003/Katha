@@ -1,8 +1,8 @@
 import Image from "next/image";
 import Assets from "@/assets/Assets";
 import SectionBadge from "@/components/ui/SectionBadge";
-import { PlayStore, Sparkle, Star } from "@/components/icons/Icons";
 import Glowbtn from "../buttons/Glowbtn";
+import { Icon } from "@iconify/react";
 
 const REVIEWS = [
   {
@@ -49,7 +49,7 @@ export default function ReviewsSection() {
         <Glowbtn text="Loved by 100k-users worldwide" classname="text-black" />
 
         <div className="mt-10 sm:mt-14 flex flex-col md:flex-row items-center justify-center gap-12 md:gap-20 ">
-          <div className="flex w- justify-between sm:justify-center items-center gap-4 sm:gap-10 ">
+          <div className="flex justify-between sm:justify-center items-center gap-4 sm:gap-10 ">
             <div className="h-[160px] sm:h-[150px] w-auto ">
               <Image
                 src={Assets.ReviewMockupLeft}
@@ -59,7 +59,7 @@ export default function ReviewsSection() {
             </div>
             <div className="flex flex-col items-center">
               <div className="flex items-center gap-1.5">
-                <Star className="h-9 w-9 sm:h-8 sm:w-8 text-[#ff9f1c]" />
+                <Icon icon="solar:star-bold" className="h-9 w-9 sm:h-8 sm:w-8 text-[#ff9f1c]" />
                 <span className="font-display text-[30px] sm:text-[26px] text-white">
                   4.5
                 </span>
@@ -77,7 +77,7 @@ export default function ReviewsSection() {
             </div>
           </div>
 
-          <div className="flex w- justify-between sm:justify-center items-center gap-4 sm:gap-12 ">
+          <div className="flex justify-between sm:justify-center items-center gap-4 sm:gap-12 ">
             <div className="h-[160px] sm:h-[150px] w-auto">
               <Image
                 src={Assets.ReviewMockupLeft}
@@ -87,7 +87,7 @@ export default function ReviewsSection() {
             </div>
             <div className="flex flex-col items-center">
               <div className="flex items-center gap-1.5">
-                <PlayStore className="h-9 w-9 sm:h-8 sm:w-8 text-[#ff9f1c]" />
+                <Icon icon="logos:google-play-icon" className="h-8 w-8 sm:h-7 sm:w-7" />
                 <span className="font-display text-[30px] sm:text-[26px] text-white">
                   500K+
                 </span>
@@ -128,10 +128,7 @@ export default function ReviewsSection() {
                   <div className="mt-0 flex items-center gap-4 sm:gap-2">
                     <span className="flex items-center gap-[2px]">
                       {Array.from({ length: 5 }, (_, s) => (
-                        <Star
-                          key={s}
-                          className="h-[12px] w-[12px] sm:h-[10px] sm:w-[10px] text-[#ffc107]"
-                        />
+                        <Icon key={s} icon="solar:star-bold" className="h-[12px] w-[12px] sm:h-[10px] sm:w-[10px] text-[#ffc107]" />
                       ))}
                     </span>
                     <span className="text-[11px] sm:text-[9.5px] text-white/40">
