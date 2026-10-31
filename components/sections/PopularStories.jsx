@@ -47,10 +47,10 @@ export default function PopularStories() {
       <div 
         onMouseEnter={() => setHoveredIndex("rail")}
         onMouseLeave={() => setHoveredIndex(null)}
-        className="mask-fade-both mt-10 sm:mt-14 w-full overflow-hidden"
+        className="mask-fade-both mt-10 sm:mt-14 w-full overflow-hidden py-4"
       >
         <div 
-          className={`flex w-max gap-4 sm:gap-6 transition-all duration-500 ease-out ${hoveredIndex !== null ? "[animation-play-state:paused] !transform-none" : "animate-marquee"}`}
+          className={`flex w-max gap-4 sm:gap-6 transition-all duration-300 ease-out ${hoveredIndex !== null ? "[animation-play-state:paused]" : "animate-marquee"}`}
         >
           {duplicatedStories.map((story, i) => {
             const isHovered = hoveredIndex === i;
@@ -59,8 +59,8 @@ export default function PopularStories() {
                 key={i}
                 onMouseEnter={() => setHoveredIndex(i)}
                 onMouseLeave={() => setHoveredIndex("rail")}
-                className={`group relative h-[320px] sm:h-[380px] shrink-0 transition-all duration-700 cubic-bezier(0.16, 1, 0.3, 1) rounded-[20px] sm:rounded-[24px] overflow-hidden border border-white/20 bg-black shadow-[0_15px_40px_rgba(0,0,0,0.8)] cursor-pointer ${
-                  isHovered ? "w-[360px] sm:w-[445px]" : "w-[210px] sm:w-[250px]"
+                className={`group relative h-[320px] sm:h-[380px] shrink-0 transition-all duration-300 ease-out rounded-[20px] sm:rounded-[24px] overflow-hidden border border-white/20 bg-black shadow-[0_15px_40px_rgba(0,0,0,0.8)] cursor-pointer ${
+                  isHovered ? "w-[360px] sm:w-[445px] z-20 scale-[1.02]" : "w-[210px] sm:w-[250px] z-10"
                 }`}
               >
                 <div className="relative h-full w-full overflow-hidden">
