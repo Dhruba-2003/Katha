@@ -3,10 +3,10 @@ import Assets from "@/assets/Assets";
 import Glowbtn from "../buttons/Glowbtn";
 
 const TAGS = [
-  "Horror", "Historical", "Romance", "Romance", "Romance", "Romance", "Fantasy",
-  "Horror", "Historical", "Romance", "Romance", "Romance", "Romance", "Fantasy",
-  "Horror", "Historical", "Romance", "Romance", "Romance", "Romance", "Fantasy",
-  "Horror", "Historical", "Romance", "Romance", "Romance", "Romance", "Fantasy",
+  "Romance", "Thriller", "Mystery", "Fantasy", "Drama", "Crime", "Suspense",
+  "Horror", "Historical", "Action", "Sci-Fi", "Comedy", "Mythology", "Adventure",
+  "Romance", "Thriller", "Mystery", "Fantasy", "Drama", "Crime", "Suspense",
+  "Horror", "Historical", "Action", "Sci-Fi", "Comedy", "Mythology", "Adventure",
 ];
 
 const MEMORY_BUBBLES = [
@@ -19,15 +19,18 @@ const MEMORY_BUBBLES = [
 const cardShell =
   "relative overflow-hidden rounded-[24px] sm:rounded-[26px] border border-white/20 bg-white/[0.035] px-4 py-8 md:px-4 md:py-6";
 
-function RememberYou({ className = "" }) {
+function FeatureBlock({
+  title = "They remember you:",
+  description = "Voice, character profiles, and interactive features that feel authentic and lively.",
+  className = "",
+}) {
   return (
     <div className={className}>
       <h3 className="text-[24px] sm:text-[16px] font-semibold text-white">
-        They remember you:
+        {title}
       </h3>
-      <p className="mt-2.5 sm:mt-1.5 text-[18px] leading-[1.4] tracking-[0.01em] text-white/90 sm:text-[13px] sm:leading-[1.1] sm:mx-auto lg:mx-0 max-w-[85%] sm:max-w-[65%]">
-        Voice, character profiles, and <br /> interactive features that feel
-        authentic and lively.
+      <p className="mt-2.5 sm:mt-1.5 text-[18px] leading-[1.4] tracking-[0.01em] text-white/90 sm:text-[13px] sm:leading-[1.1] sm:mx-auto lg:mx-0 max-w-[85%] sm:max-w-[70%]">
+        {description}
       </p>
     </div>
   );
@@ -113,7 +116,11 @@ export default function FeatureSection() {
                       </div>
                     </div>
                     <div className="mt-3.5">
-                      <RememberYou className="mt-4 sm:mt-3.5" />
+                      <FeatureBlock
+                        title="Characters remember you:"
+                        description="Your name, choices, and secrets are remembered across every episode and conversation."
+                        className="mt-4 sm:mt-3.5"
+                      />
                     </div>
                   </div>
 
@@ -166,7 +173,11 @@ export default function FeatureSection() {
                     ))}
                   </div>
 
-                  <RememberYou className="mt-8" />
+                  <FeatureBlock
+                    title="Characters remember you:"
+                    description="Your name, choices, and secrets are remembered across every episode."
+                    className="mt-8"
+                  />
                 </div>
               </div>
 
@@ -180,7 +191,10 @@ export default function FeatureSection() {
                   />
                 </div>
                 <div className="relative z-10">
-                  <RememberYou />
+                  <FeatureBlock
+                    title="Unique personalities & voices:"
+                    description="Every character has their own tone, speech style, and secrets that react to how you speak."
+                  />
 
                   <div className="relative mt-12 sm:mt-4 overflow-hidden rounded-[12px] flex items-center justify-center p-0 sm:p-3">
                     <Image
@@ -210,7 +224,11 @@ export default function FeatureSection() {
                     />
                   </div>
 
-                  <RememberYou className="mt-12 sm:mt-3.5" />
+                  <FeatureBlock
+                    title="You're in the lead role:"
+                    description="Your messages move the plot forward. No two stories play out the same way."
+                    className="mt-12 sm:mt-3.5"
+                  />
                 </div>
               </div>
 
@@ -224,18 +242,22 @@ export default function FeatureSection() {
                   />
                 </div>
 
-                <div className="relative z-10 flex flex-wrap gap-2 sm:gap-2.5 justify-start lg:grid lg:grid-cols-7 max-h-[150px] overflow-hidden">
+                <div className="relative z-10 flex flex-wrap gap-2 sm:gap-2 justify-start lg:grid lg:grid-cols-7">
                   {TAGS.map((tag, i) => (
                     <span
                       key={i}
-                      className="inline-flex items-center justify-center rounded-full bg-gray-400/20 px-2 py-1 sm:px-2.5 sm:py-2 text-[14px] sm:text-[13px] font-medium text-white/85 shadow-sm transition-colors hover:border-white/25 hover:bg-white/15 text-center select-none"
+                      className="inline-flex items-center justify-center rounded-full border border-white/10 bg-white/[0.08] px-2 py-1.5 sm:px-2.5 sm:py-1.5 text-[12.5px] sm:text-[12px] xl:text-[13px] font-medium text-white/90 shadow-sm transition-all hover:border-white/30 hover:bg-white/20 text-center select-none"
                     >
                       {tag}
                     </span>
                   ))}
                 </div>
 
-                <RememberYou className="relative z-10 mt-10 sm:mt-0" />
+                <FeatureBlock
+                  title="Infinite shows & genres:"
+                  description="From passionate romance to gripping thrillers and mysteries, with new shows added regularly."
+                  className="relative z-10 mt-8 sm:mt-4"
+                />
               </div>
             </div>
           </div>

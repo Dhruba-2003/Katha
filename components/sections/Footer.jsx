@@ -3,11 +3,12 @@ import Logo from "@/components/ui/Logo";
 import { Icon } from "@iconify/react";
 
 const LINKS = [
-  { label: "Privacy", href: "#privacy" },
+  { label: "Privacy", href: "/privacy" },
   { label: "Terms", href: "#terms" },
   { label: "Support", href: "#support" },
   { label: "Report", href: "#report" },
-  { label: "Contact Us", href: "#contact" },
+  { label: "Contact Us", href: "/contact" },
+  { label: "About", href: "/about" },
 ];
 
 export default function Footer() {
@@ -18,14 +19,16 @@ export default function Footer() {
         <div>
           <Logo size="lg" imgClassName="h-9 sm:h-12 2xl:h-[52px]" />
           <p className="mt-4 sm:mt-5 text-[11px] text-white/40">
-            &copy; AFAHCC Labs Private Limited
+            &copy; Techzuno Solution OPC Private Limited
           </p>
         </div>
 
         {/* ---------- links + social ---------- */}
         <div className="flex flex-col sm:flex-row flex-wrap items-start gap-8 sm:gap-x-16 sm:gap-y-10 md:gap-x-24">
           <div>
-            <p className="text-[14px] sm:text-[15px] font-semibold text-white">Links</p>
+            <p className="text-[14px] sm:text-[15px] font-semibold text-white">
+              Links
+            </p>
             <ul className="mt-4 sm:mt-6 grid grid-cols-3 gap-x-6 gap-y-3 sm:gap-y-4">
               {LINKS.map((link) => (
                 <li key={link.label}>
@@ -41,7 +44,9 @@ export default function Footer() {
           </div>
 
           <div>
-            <p className="text-[14px] sm:text-[15px] font-semibold text-white">Follow us</p>
+            <p className="text-[14px] sm:text-[15px] font-semibold text-white">
+              Follow us
+            </p>
             <div className="mt-4 sm:mt-6 flex items-center gap-3">
               <a
                 href="#x"

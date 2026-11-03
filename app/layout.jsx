@@ -16,9 +16,30 @@ const playfair = Playfair_Display({
 });
 
 export const metadata = {
-  title: "Katha — AI characters. Real drama.",
+  title: "Katha — AI Characters & Interactive Drama Stories",
   description:
-    "Pick a show, meet the characters, and shape what happens next. One message at a time.",
+    "Step into gripping web series where you play the lead. Chat with AI characters who remember you and shape the story with every message.",
+  keywords: [
+    "AI characters chat app",
+    "interactive story app",
+    "chat with AI characters",
+    "AI roleplay stories",
+    "AI drama app",
+  ],
+  openGraph: {
+    title: "Katha — AI Characters & Interactive Drama Stories",
+    description:
+      "Step into gripping web series where you play the lead. Chat with AI characters who remember you and shape the story with every message.",
+    type: "website",
+    locale: "en_US",
+    siteName: "Katha",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Katha — AI Characters & Interactive Drama Stories",
+    description:
+      "Step into gripping web series where you play the lead. Chat with AI characters who remember you and shape the story with every message.",
+  },
 };
 
 export const viewport = {

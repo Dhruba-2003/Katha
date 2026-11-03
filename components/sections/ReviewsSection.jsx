@@ -9,35 +9,35 @@ import { Icon } from "@iconify/react";
 
 const REVIEWS = [
   {
-    name: "Fatima",
-    date: "02 Jan 2026",
-    text: "This app has become a part of my daily routine. The characters are so engaging and the UI is incredibly smooth. Highly recommended!",
+    name: "Ananya S.",
+    date: "14 Feb 2026",
+    text: "Felt like I was literally inside a high-budget thriller web series. Kabir actually remembered what I said three episodes ago. The cliffhangers are insane!",
   },
   {
-    name: "Aarav",
-    date: "03 Jan 2026",
-    text: "An absolute masterpiece in storytelling. Conversations feel genuinely human and unpredictable in the best way possible.",
+    name: "Vikram M.",
+    date: "18 Feb 2026",
+    text: "Not your typical boring chatbot. It's like a drama series where you decide who survives the climax. Every reply really changes the story.",
   },
   {
-    name: "Priya",
-    date: "04 Jan 2026",
-    text: "The voice and memory features make every session so immersive. Truly feels like starring in your own drama series.",
+    name: "Pooja R.",
+    date: "22 Feb 2026",
+    text: "The romance storyline had me hooked from the first message. Kanya's dialogue and voice feel so authentic and playful.",
   },
   {
-    name: "Rohan",
-    date: "05 Jan 2026",
-    text: "Stunning visuals and incredible depth in characters. I spend hours exploring different show scenarios every single day.",
+    name: "Zayn K.",
+    date: "28 Feb 2026",
+    text: "Never seen storytelling like this. The plot completely branched when I refused to cooperate with the detective. 10/10 drama!",
   },
   {
-    name: "Neha",
-    date: "06 Jan 2026",
-    text: "Clean UI, phenomenal AI responsiveness, and an overall polished experience. 10/10 would recommend to everyone.",
+    name: "Divya N.",
+    date: "03 Mar 2026",
+    text: "Binge-playing through the mystery show every night. Love how each character has a completely distinct attitude and tone. Truly cinematic.",
   },
 ];
 
 export default function ReviewsSection() {
   const [hoveredIndex, setHoveredIndex] = useState(null);
-  const duplicatedReviews = [...REVIEWS, ...REVIEWS, ...REVIEWS];
+  const duplicatedReviews = [...REVIEWS, ...REVIEWS, ...REVIEWS, ...REVIEWS];
 
   return (
     <section
@@ -125,26 +125,19 @@ export default function ReviewsSection() {
               key={i}
               className="w-[320px] sm:w-[340px] shrink-0 rounded-[16px] border border-white/10 bg-linear-to-b from-[#351426]/75 via-[#21151c]/70 to-[#171617]/80 backdrop-blur-xl py-5 px-6 sm:py-6 sm:px-8 shadow-[0_10px_30px_rgba(0,0,0,0.5)] transition-all duration-300 ease-out hover:scale-[1.03] hover:border-white/30 cursor-pointer"
             >
-              <div className="flex items-center gap-3 sm:gap-2.5">
-                <Image
-                  src={Assets.ReviewAvatar}
-                  alt={review.name}
-                  className="h-[40px] w-[40px] sm:h-[36px] sm:w-[36px] rounded-full object-cover"
-                />
-                <div className="min-w-0">
-                  <p className="truncate text-[20px] sm:text-[18px] font-medium text-white">
-                    {review.name}
-                  </p>
-                  <div className="mt-0 flex items-center gap-4 sm:gap-2">
-                    <span className="flex items-center gap-[2px]">
-                      {Array.from({ length: 5 }, (_, s) => (
-                        <Icon key={s} icon="solar:star-bold" className="h-[12px] w-[12px] sm:h-[10px] sm:w-[10px] text-[#ffc107]" />
-                      ))}
-                    </span>
-                    <span className="text-[11px] sm:text-[9.5px] text-white/40">
-                      {review.date}
-                    </span>
-                  </div>
+              <div className="min-w-0">
+                <p className="truncate text-[20px] sm:text-[18px] font-medium text-white">
+                  {review.name}
+                </p>
+                <div className="mt-1 flex items-center gap-4 sm:gap-2">
+                  <span className="flex items-center gap-[2px]">
+                    {Array.from({ length: 5 }, (_, s) => (
+                      <Icon key={s} icon="solar:star-bold" className="h-[12px] w-[12px] sm:h-[10px] sm:w-[10px] text-[#ffc107]" />
+                    ))}
+                  </span>
+                  <span className="text-[11px] sm:text-[9.5px] text-white/40">
+                    {review.date}
+                  </span>
                 </div>
               </div>
 

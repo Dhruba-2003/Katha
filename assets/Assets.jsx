@@ -22,6 +22,12 @@ import Story3 from "./images/Story3.png";
 import Story4 from "./images/Story4.png";
 import Story5 from "./images/Story5.png";
 import Story6 from "./images/Story6.png";
+import Story7 from "./images/story7.jpg";
+import Story8 from "./images/story8.jpg";
+import Story9 from "./images/story9.jpg";
+import Story10 from "./images/story10.jpg";
+import Story11 from "./images/story11.jpg";
+import Story12 from "./images/story12.jpg";
 import Logo from "./images/logo.png";
 import ReviewMockupLeft from "./images/ReviewMockupLeft.png";
 import ReviewMockupRight from "./images/ReviewMockupRight.png";
@@ -42,10 +48,7 @@ import ExperienceBgMobile from "./images/ExperienceBgMobile.png";
 import GooglePlay from "./images/GooglePlay.png";
 // import AppStore from "./images/AppStore.png";
 
-
-
 const Assets = {
-
   HeroBgImage,
   ExperienceBg,
   ExperienceRightMockup,
@@ -57,6 +60,12 @@ const Assets = {
   Story4,
   Story5,
   Story6,
+  Story7,
+  Story8,
+  Story9,
+  Story10,
+  Story11,
+  Story12,
   Logo,
   ReviewMockupLeft,
   ReviewMockupRight,
@@ -75,6 +84,7 @@ const Assets = {
   DownloadBgMobile,
   ReviewsBgMobile,
   ExperienceBgMobile,
+  GooglePlay,
 };
 
 export default Assets;
