@@ -31,7 +31,7 @@ export default function Navbar({ className = "" }) {
       } ${className}`}
     >
       <div className="flex w-full items-center justify-between">
-        <Link href="#hero" aria-label="Katha home">
+        <Link href="/" aria-label="Katha home">
           <Image
             src={Assets.Logo}
             alt="Katha"

@@ -40,7 +40,7 @@ export default function Hero() {
               tone="pink"
               className="my-4 text-[13px] sm:text-[14px] whitespace-nowrap "
             >
-              Experience stories just by chatting
+              Real People. Infinite Stories.
             </SectionBadge>
 
             <h1 className="font-display leading-[1.15] font-extrabold tracking-[0.01em] text-[40px] sm:text-[44px] md:text-[56px] lg:text-[64px] lg:leading-[1.1] mt-4 sm:mt-4">
@@ -53,22 +53,14 @@ export default function Hero() {
             </h1>
 
             <p className="mt-4 hidden sm:block text-[16px] leading-[1.35] tracking-[0.02em] text-white/90 sm:text-[18px] sm:leading-[1.25] mx-auto lg:mx-0 max-w-[420px] ">
-              Pick a show, meet the characters, and shape what happens next. One message at a time.
+              TV-style drama meets conversation. Pick a show, meet AI characters who remember you, and shape the story with every message.
             </p>
             
             <p className="mt-4 sm:hidden text-[20px] leading-[1.35] tracking-[0.02em] text-white/90 mx-auto max-w-[420px]">
-              Pick a show, meet the characters, and shape what happens next.
+              TV-style drama meets conversation. Pick a show, play your role, and shape what happens next.
             </p>
 
             <div className="mt-8 flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4 w-full sm:w-auto sm:mt-10">
-              <a
-                href={downloadLink}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex w-full sm:w-auto items-center justify-center rounded-full bg-linear-to-r from-[#ff3d8f] via-[#d946ef] to-[#a855f7] px-11 py-2.5 text-[18px] sm:text-[14px] font-medium tracking-[0.02em] text-black uppercase shadow-[0_8px_30px_rgba(217,70,239,0.4)] transition-transform hover:scale-[1.03]"
-              >
-                JOIN US
-              </a>
               <a
                 href={downloadLink}
                 target="_blank"

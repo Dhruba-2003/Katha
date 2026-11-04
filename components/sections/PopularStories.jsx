@@ -1,26 +1,57 @@
 "use client";
 
-import { useState } from "react";
 import Image from "next/image";
 import Assets from "@/assets/Assets";
 import Glowbtn from "../buttons/Glowbtn";
 
 const STORIES = [
-  { src: Assets.Story1, name: "Rishabh" },
-  { src: Assets.Story2, name: "Rishabh" },
-  { src: Assets.Story3, name: "Rishabh" },
-  { src: Assets.Story4, name: "Rishabh" },
-  { src: Assets.Story5, name: "Rishabh" },
-  { src: Assets.Story6, name: "Rishabh" },
-  { src: Assets.Story1, name: "Rishabh" },
-  { src: Assets.Story2, name: "Rishabh" },
+  {
+    src: Assets.Story7,
+    name: "Corporate Circus",
+    genre: "Drama",
+    userRole: "New Colleague",
+    tagline: "Surviving the 9 to 5, one office drama at a time.",
+  },
+  {
+    src: Assets.Story8,
+    name: "Sanya — Your Unexpected College Crush",
+    genre: "Romance",
+    userRole: "Classmate",
+    tagline: "She was just a friend until that rainy afternoon...",
+  },
+  {
+    src: Assets.Story9,
+    name: "Bunty Sharma — College Ka Mahaa-Locha",
+    genre: "Drama",
+    userRole: "Best Friend",
+    tagline: "Campus fights, broken rules, and pure chaos.",
+  },
+  {
+    src: Assets.Story10,
+    name: "Meri Sabse Badi Fan",
+    genre: "Romance",
+    userRole: "Rising Star",
+    tagline: "She knows all your secrets. But who is she?",
+  },
+  {
+    src: Assets.Story11,
+    name: "Adrian Moretti — The Devil's Obsession",
+    genre: "Dark Romance",
+    userRole: "The Intruder",
+    tagline: "A dangerous billionaire with secrets in every shadow.",
+  },
+  {
+    src: Assets.Story12,
+    name: "Rudra Singh — The Campus King",
+    genre: "Drama",
+    userRole: "Campus Rival",
+    tagline: "Rule the college or bow down to the king.",
+  },
 ].filter((story) => story.src);
 
 export default function PopularStories() {
-  const [hoveredIndex, setHoveredIndex] = useState(null);
-
   // Duplicate stories to create a seamless infinite marquee loop
-  const duplicatedStories = [...STORIES, ...STORIES, ...STORIES];
+  const duplicatedStories = [...STORIES, ...STORIES, ...STORIES, ...STORIES];
 
   return (
     <section
@@ -38,8 +69,8 @@ export default function PopularStories() {
             Popular <span className="text-[#ff3d8f]">Stories</span>
           </span>
         </h2>
-        <p className="mt-4 max-w-[90%] mx-auto text-[15px] sm:text-[14px] leading-[1.4] text-white/65 sm:max-w-[420px]">
-          How 11 characters from iconic shows react when you chat with them
+        <p className="mt-4 max-w-[90%] mx-auto text-[15px] sm:text-[14px] leading-[1.4] text-white/65 sm:max-w-[460px]">
+          Step into gripping shows across romance, thrillers, fantasy, and mystery. Every choice moves the plot.
         </p>
       </div>
 
@@ -54,28 +85,22 @@ export default function PopularStories() {
               <div className="relative h-full w-full overflow-hidden">
                 <Image
                   src={story.src}
-                  alt={`${story.name} — popular story`}
+                  alt={story.name}
                   fill
                   className="h-full w-full object-cover transition-transform duration-700 ease-out group-hover:scale-[1.05]"
                 />
 
                 {/* bottom gradient overlay */}
-                <div className="absolute inset-x-0 bottom-0 h-48 bg-gradient-to-t from-black via-black/80 to-transparent transition-opacity duration-500" />
+                <div className="absolute inset-x-0 bottom-0 h-48 sm:h-56 bg-gradient-to-t from-black via-black/85 to-transparent transition-opacity duration-500" />
 
-                <div className="absolute inset-x-6 bottom-6 flex flex-col items-center text-center gap-3">
-                  <p className="font-display text-[18px] sm:text-[22px] font-bold text-white tracking-wide truncate transition-all duration-500">
+                <div className="absolute inset-x-3 sm:inset-x-5 bottom-4 sm:bottom-5 flex flex-col items-center text-center gap-1.5 sm:gap-2">
+                  <span className="inline-block rounded-full bg-white/10 px-2.5 py-0.5 text-[10px] sm:text-[11px] font-medium tracking-wider text-pink-300 uppercase backdrop-blur-xs border border-white/10">
+                    {story.genre}
+                  </span>
+                  
+                  <p className="font-display text-[16px] sm:text-[19px] lg:text-[21px] font-bold text-white tracking-wide transition-all duration-500 line-clamp-2 px-1">
                     {story.name}
                   </p>
-                  
-                  {/* Action buttons only visible on hover (desktop only) */}
-                  <div className="hidden lg:flex items-center justify-center gap-2.5 opacity-0 max-h-0 translate-y-3 pointer-events-none group-hover:opacity-100 group-hover:max-h-[60px] group-hover:translate-y-0 transition-all duration-300 ease-out overflow-hidden">
-                    <span className="inline-flex items-center gap-1.5 rounded-full bg-white/15 px-3.5 py-1.5 text-[11px] font-medium text-white backdrop-blur-md border border-white/20 whitespace-nowrap shadow-lg">
-                      <span className="text-[12px]">🎭</span> Talk to : Rishab
-                    </span>
-                    <span className="inline-flex items-center gap-1.5 rounded-full bg-white/15 px-3.5 py-1.5 text-[11px] font-medium text-white backdrop-blur-md border border-white/20 whitespace-nowrap shadow-lg">
-                      <span className="text-[12px]">👤</span> You are : Robot
-                    </span>
-                  </div>
                 </div>
               </div>
             </article>
