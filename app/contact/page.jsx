@@ -5,7 +5,9 @@ import Glowbtn from "@/components/buttons/Glowbtn";
 import { Icon } from "@iconify/react";
 
 export default function ContactPage() {
+  const [loading, setLoading] = useState(false);
   const [submitted, setSubmitted] = useState(false);
+  const [error, setError] = useState("");
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -13,10 +15,43 @@ export default function ContactPage() {
     message: "",
   });
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
+    setLoading(true);
+    setError("");
 
-    setSubmitted(true);
+    try {
+      const apiUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000";
+      const response = await fetch(`${apiUrl}/api/contact`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok || !data.success) {
+        throw new Error(data.error || "Failed to send message. Please try again.");
+      }
+
+      setSubmitted(true);
+      setFormData({
+        name: "",
+        email: "",
+        subject: "",
+        message: "",
+      });
+    } catch (err) {
+      console.error("Contact submission error:", err);
+      setError(
+        err.message ||
+          "Unable to connect to the server. Please check your internet connection or try again later."
+      );
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -113,18 +148,34 @@ export default function ContactPage() {
                 </h3>
                 <p className="mt-2 max-w-[360px] text-[15px] text-white/60">
                   Thank you for reaching out. We have received your note and
-                  will get back to you shortly.
+                  will get back to you shortly. A confirmation email has also been sent to you.
                 </p>
                 <button
                   type="button"
-                  onClick={() => setSubmitted(false)}
-                  className="mt-6 rounded-full border border-white/20 px-6 py-2 text-[13px] text-white transition-colors hover:bg-white/10"
+                  onClick={() => {
+                    setSubmitted(false);
+                    setError("");
+                  }}
+                  className="mt-6 rounded-full border border-white/20 px-6 py-2 text-[13px] text-white transition-colors hover:bg-white/10 cursor-pointer"
                 >
                   Send another message
                 </button>
               </div>
             ) : (
               <form onSubmit={handleSubmit} className="space-y-6">
+                {error && (
+                  <div className="flex items-start gap-3 rounded-[16px] border border-red-500/30 bg-red-500/10 p-4 text-[14px] text-red-200">
+                    <Icon
+                      icon="solar:danger-triangle-bold"
+                      className="h-5 w-5 shrink-0 text-red-400 mt-0.5"
+                    />
+                    <div className="flex-1">
+                      <p className="font-medium text-red-300">Unable to send</p>
+                      <p className="text-[13px] text-red-200/80 mt-0.5">{error}</p>
+                    </div>
+                  </div>
+                )}
+
                 <div>
                   <label
                     htmlFor="name"
@@ -136,12 +187,13 @@ export default function ContactPage() {
                     id="name"
                     type="text"
                     required
+                    disabled={loading}
                     placeholder="e.g. Rahul Sharma"
                     value={formData.name}
                     onChange={(e) =>
                       setFormData({ ...formData, name: e.target.value })
                     }
-                    className="mt-2 w-full rounded-[14px] border border-white/15 bg-white/[0.04] px-4 py-3.5 text-[15px] text-white placeholder-white/30 backdrop-blur-md transition-colors focus:border-[#ff3d8f] focus:outline-none focus:ring-1 focus:ring-[#ff3d8f]"
+                    className="mt-2 w-full rounded-[14px] border border-white/15 bg-white/[0.04] px-4 py-3.5 text-[15px] text-white placeholder-white/30 backdrop-blur-md transition-colors focus:border-[#ff3d8f] focus:outline-none focus:ring-1 focus:ring-[#ff3d8f] disabled:opacity-50"
                   />
                 </div>
 
@@ -156,12 +208,13 @@ export default function ContactPage() {
                     id="email"
                     type="email"
                     required
+                    disabled={loading}
                     placeholder="you@example.com"
                     value={formData.email}
                     onChange={(e) =>
                       setFormData({ ...formData, email: e.target.value })
                     }
-                    className="mt-2 w-full rounded-[14px] border border-white/15 bg-white/[0.04] px-4 py-3.5 text-[15px] text-white placeholder-white/30 backdrop-blur-md transition-colors focus:border-[#ff3d8f] focus:outline-none focus:ring-1 focus:ring-[#ff3d8f]"
+                    className="mt-2 w-full rounded-[14px] border border-white/15 bg-white/[0.04] px-4 py-3.5 text-[15px] text-white placeholder-white/30 backdrop-blur-md transition-colors focus:border-[#ff3d8f] focus:outline-none focus:ring-1 focus:ring-[#ff3d8f] disabled:opacity-50"
                   />
                 </div>
 
@@ -176,12 +229,13 @@ export default function ContactPage() {
                     id="subject"
                     type="text"
                     required
+                    disabled={loading}
                     placeholder="How can we help?"
                     value={formData.subject}
                     onChange={(e) =>
                       setFormData({ ...formData, subject: e.target.value })
                     }
-                    className="mt-2 w-full rounded-[14px] border border-white/15 bg-white/[0.04] px-4 py-3.5 text-[15px] text-white placeholder-white/30 backdrop-blur-md transition-colors focus:border-[#ff3d8f] focus:outline-none focus:ring-1 focus:ring-[#ff3d8f]"
+                    className="mt-2 w-full rounded-[14px] border border-white/15 bg-white/[0.04] px-4 py-3.5 text-[15px] text-white placeholder-white/30 backdrop-blur-md transition-colors focus:border-[#ff3d8f] focus:outline-none focus:ring-1 focus:ring-[#ff3d8f] disabled:opacity-50"
                   />
                 </div>
 
@@ -196,20 +250,29 @@ export default function ContactPage() {
                     id="message"
                     rows={4}
                     required
+                    disabled={loading}
                     placeholder="Tell us what you're thinking..."
                     value={formData.message}
                     onChange={(e) =>
                       setFormData({ ...formData, message: e.target.value })
                     }
-                    className="mt-2 w-full rounded-[14px] border border-white/15 bg-white/[0.04] px-4 py-3.5 text-[15px] text-white placeholder-white/30 backdrop-blur-md transition-colors focus:border-[#ff3d8f] focus:outline-none focus:ring-1 focus:ring-[#ff3d8f] resize-none"
+                    className="mt-2 w-full rounded-[14px] border border-white/15 bg-white/[0.04] px-4 py-3.5 text-[15px] text-white placeholder-white/30 backdrop-blur-md transition-colors focus:border-[#ff3d8f] focus:outline-none focus:ring-1 focus:ring-[#ff3d8f] resize-none disabled:opacity-50"
                   />
                 </div>
 
                 <button
                   type="submit"
-                  className="w-full sm:w-auto inline-flex items-center justify-center rounded-full bg-linear-to-r from-[#B54AFF] to-[#FF7D94] px-8 py-3.5 text-[14px] font-semibold tracking-[0.03em] text-black uppercase shadow-[0_8px_30px_rgba(217,70,239,0.35)] transition-all hover:scale-[1.02] hover:shadow-[0_12px_40px_rgba(217,70,239,0.5)] cursor-pointer"
+                  disabled={loading}
+                  className="w-full sm:w-auto inline-flex items-center justify-center gap-2 rounded-full bg-linear-to-r from-[#B54AFF] to-[#FF7D94] px-8 py-3.5 text-[14px] font-semibold tracking-[0.03em] text-black uppercase shadow-[0_8px_30px_rgba(217,70,239,0.35)] transition-all hover:scale-[1.02] hover:shadow-[0_12px_40px_rgba(217,70,239,0.5)] cursor-pointer disabled:opacity-60 disabled:cursor-not-allowed disabled:hover:scale-100"
                 >
-                  Send Message
+                  {loading ? (
+                    <>
+                      <Icon icon="line-md:loading-loop" className="h-5 w-5 animate-spin" />
+                      <span>Sending...</span>
+                    </>
+                  ) : (
+                    <span>Send Message</span>
+                  )}
                 </button>
               </form>
             )}

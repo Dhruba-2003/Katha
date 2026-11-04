@@ -1,10 +1,11 @@
 /**
  * Katha Contact Form Mail Server
  * Sends contact form submissions from customers to the company (info@techzuno.com)
- * using Gmail SMTP via Nodemailer.
+ * and sends an automatic confirmation reply to the customer using Gmail SMTP via Nodemailer.
  */
 
-require('dotenv').config();
+const path = require('path');
+require('dotenv').config({ path: path.join(__dirname, '.env') });
 const express = require('express');
 const cors = require('cors');
 const helmet = require('helmet');
@@ -19,7 +20,7 @@ const PORT = process.env.PORT || 5000;
 // Transporter (Gmail SMTP)
 // -----------------------------
 const transporter = nodemailer.createTransport({
-  host: process.env.MAIL_HOST,
+  host: process.env.MAIL_HOST || 'smtp.gmail.com',
   port: parseInt(process.env.MAIL_PORT, 10) || 587,
   secure: process.env.MAIL_SECURE === 'true', // false for port 587 (STARTTLS)
   auth: {
@@ -29,7 +30,7 @@ const transporter = nodemailer.createTransport({
 });
 
 // Verify transporter connection on startup
-transporter.verify((error, success) => {
+transporter.verify((error) => {
   if (error) {
     console.error('❌ SMTP connection failed:', error.message);
   } else {
@@ -41,20 +42,26 @@ transporter.verify((error, success) => {
 // Middleware
 // -----------------------------
 app.use(helmet());
+
+// Cross-Origin Resource Sharing
 app.use(
   cors({
-    origin: process.env.FRONTEND_URL || '*',
-    methods: ['GET', 'POST'],
-    allowedHeaders: ['Content-Type'],
+    origin: '*',
+    methods: ['GET', 'POST', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization'],
   })
 );
+
 app.use(express.json({ limit: '10kb' }));
 
-// Rate limit: max 5 submissions per 15 minutes per IP
+// Rate limit: 60 submissions in dev, 15 in production per 15 minutes per IP
 const contactLimiter = rateLimit({
-  windowMs: 15 * 60 * 1000, // 15 minutes
-  max: 5,
-  message: { error: 'Too many contact form submissions. Please try again later.' },
+  windowMs: 15 * 60 * 1000,
+  max: process.env.NODE_ENV === 'production' ? 15 : 60,
+  message: {
+    success: false,
+    error: 'Too many contact form submissions from this IP. Please try again later.',
+  },
   standardHeaders: true,
   legacyHeaders: false,
 });
@@ -65,7 +72,14 @@ const contactLimiter = rateLimit({
 
 // Health check
 app.get('/api/health', (_req, res) => {
-  res.json({ status: 'ok', service: 'katha-mail-server' });
+  res.json({
+    status: 'ok',
+    service: 'katha-mail-server',
+    smtp: {
+      host: process.env.MAIL_HOST,
+      user: process.env.MAIL_USER,
+    },
+  });
 });
 
 // Contact form submission endpoint
@@ -73,7 +87,6 @@ app.post(
   '/api/contact',
   contactLimiter,
   [
-    // Validate form fields (matching the Katha contact form in the image)
     body('name')
       .trim()
       .notEmpty()
@@ -104,7 +117,12 @@ app.post(
     // Return validation errors if any
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
-      return res.status(400).json({ errors: errors.array() });
+      const firstError = errors.array()[0]?.msg || 'Validation failed';
+      return res.status(400).json({
+        success: false,
+        error: firstError,
+        errors: errors.array(),
+      });
     }
 
     const { name, email, subject, message } = req.body;
@@ -114,13 +132,12 @@ app.post(
     const escapedSubject = escapeHtml(subject);
     const escapedMessage = escapeHtml(message).replace(/\n/g, '<br>');
 
-    const mailOptions = {
-      // From: the company (Team TechZuno)
-      from: `"${process.env.MAIL_FROM_NAME}" <${process.env.MAIL_FROM_ADDRESS}>`,
-      // To: the company inbox (info@techzuno.com)
-      to: `"${process.env.MAIL_TO_NAME}" <${process.env.MAIL_TO_ADDRESS}>`,
+    // 1. Email to the company (notification)
+    const companyMailOptions = {
+      from: `"${process.env.MAIL_FROM_NAME || 'Team Techzuno'}" <${process.env.MAIL_FROM_ADDRESS || 'info@techzuno.com'}>`,
+      to: `"${process.env.MAIL_TO_NAME || 'Katha Support Team'}" <${process.env.MAIL_TO_ADDRESS || 'info@techzuno.com'}>`,
       subject: `[Katha Contact] ${escapedSubject}`,
-      replyTo: `"${escapedName}" <${escapedEmail}>`, // company can reply directly to customer
+      replyTo: `"${escapedName}" <${escapedEmail}>`,
       text: `
 New contact form submission from the Katha website.
 
@@ -146,13 +163,51 @@ Company Email: info@techzuno.com
       }),
     };
 
+    // 2. Email to the customer (auto-reply confirmation)
+    const customerMailOptions = {
+      from: `"${process.env.MAIL_FROM_NAME || 'Katha Support'}" <${process.env.MAIL_FROM_ADDRESS || 'info@techzuno.com'}>`,
+      to: `"${escapedName}" <${escapedEmail}>`,
+      subject: `Thank you for contacting Katha: ${escapedSubject}`,
+      replyTo: `"${process.env.MAIL_TO_NAME || 'Katha Support'}" <${process.env.MAIL_TO_ADDRESS || 'info@techzuno.com'}>`,
+      text: `
+Hi ${name},
+
+Thank you for reaching out to Katha!
+
+We have received your message regarding "${subject}" and our team is already reviewing it. We will get back to you shortly.
+
+A copy of your message:
+${message}
+
+Best regards,
+Team Katha
+Techzuno Solution OPC Private Limited
+info@techzuno.com
+      `.trim(),
+      html: buildCustomerReplyTemplate({
+        name: escapedName,
+        subject: escapedSubject,
+        message: escapedMessage,
+      }),
+    };
+
     try {
-      const info = await transporter.sendMail(mailOptions);
-      console.log('✅ Message sent:', info.messageId);
+      // Send notification to company
+      const companyInfo = await transporter.sendMail(companyMailOptions);
+      console.log('✅ Company notification sent:', companyInfo.messageId);
+
+      // Send auto-reply to customer
+      try {
+        const customerInfo = await transporter.sendMail(customerMailOptions);
+        console.log('✅ Customer auto-reply sent:', customerInfo.messageId);
+      } catch (replyErr) {
+        console.warn('⚠️ Could not send auto-reply to customer:', replyErr.message);
+      }
+
       return res.status(200).json({
         success: true,
         message: 'Your message has been sent successfully. We will get back to you soon.',
-        messageId: info.messageId,
+        messageId: companyInfo.messageId,
       });
     } catch (error) {
       console.error('❌ Failed to send email:', error);
@@ -176,17 +231,15 @@ app.use((err, _req, res, _next) => {
 });
 
 // -----------------------------
-// Advanced HTML Email Template
-// Katha brand: pink/magenta neon theme (image 2) + Katha logo with heart (image 1)
+// HTML Email Template (Company Notification)
 // -----------------------------
 function buildEmailTemplate({ name, email, subject, message }) {
-  // Katha brand colors (pink/magenta neon theme)
-  const brandPink = '#ec4899';      // bright pink
-  const brandPinkDark = '#be185d';  // deep magenta
-  const brandPurple = '#8b5cf6';    // violet accent
-  const darkBg = '#0f172a';         // deep navy/black background
-  const cardBg = '#ffffff';         // white card
-  const muted = '#64748b';          // slate gray
+  const brandPink = '#ec4899';
+  const brandPinkDark = '#be185d';
+  const brandPurple = '#8b5cf6';
+  const darkBg = '#0f172a';
+  const cardBg = '#ffffff';
+  const muted = '#64748b';
 
   return `
 <!DOCTYPE html>
@@ -197,36 +250,27 @@ function buildEmailTemplate({ name, email, subject, message }) {
   <title>New Contact Form Submission - Katha</title>
 </head>
 <body style="margin:0; padding:0; width:100%; background-color:${darkBg}; color:#1e293b; font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,'Helvetica Neue',Arial,sans-serif; -webkit-font-smoothing:antialiased;">
-  <!-- Full-width background wrapper -->
   <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%">
     <tr>
       <td align="center" style="padding:30px 12px;">
-        <!-- Main centered card: fixed 600px width for professional alignment -->
         <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="600" style="max-width:600px; background:${cardBg}; border-radius:20px; overflow:hidden; box-shadow:0 24px 32px -8px rgba(0,0,0,0.12),0 12px 16px -6px rgba(0,0,0,0.06);">
           
-          <!-- ========== HEADER: Katha Logo Image (SVG embedded) ========== -->
+          <!-- HEADER -->
           <tr>
             <td align="center" style="padding:32px 24px 20px; background:${cardBg};">
-              <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%">
+              <table role="presentation" cellspacing="0" cellpadding="0" border="0" align="center">
                 <tr>
                   <td align="center">
-                    <!-- Katha logo: HTML/CSS based (email-client safe) matching your brand logo -->
-                    <table role="presentation" cellspacing="0" cellpadding="0" border="0" align="center">
-                      <tr>
-                        <td align="center">
-                          <span style="display:inline-block; font-family:'Georgia','Times New Roman',serif; font-size:40px; font-weight:700; color:#112430; letter-spacing:-2px; line-height:1;">Katha</span>
-                          <span style="display:inline-block; font-size:40px; color:#ec4899; line-height:1; margin-left:-6px;">❤</span>
-                        </td>
-                      </tr>
-                    </table>
-                    <p style="margin:8px 0 0; font-size:13px; color:${muted}; font-weight:500; letter-spacing:0.3px;">get back to you friendly.</p>
+                    <span style="display:inline-block; font-family:'Georgia','Times New Roman',serif; font-size:40px; font-weight:700; color:#112430; letter-spacing:-2px; line-height:1;">Katha</span>
+                    <span style="display:inline-block; font-size:40px; color:#ec4899; line-height:1; margin-left:-6px;">❤</span>
                   </td>
                 </tr>
               </table>
+              <p style="margin:8px 0 0; font-size:13px; color:${muted}; font-weight:500; letter-spacing:0.3px;">Real People. Infinite Stories.</p>
             </td>
           </tr>
 
-          <!-- Pink accent underline -->
+          <!-- Accent Line -->
           <tr>
             <td style="padding:0 24px;">
               <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%">
@@ -237,28 +281,22 @@ function buildEmailTemplate({ name, email, subject, message }) {
             </td>
           </tr>
 
-          <!-- ========== BADGE ========== -->
+          <!-- BADGE -->
           <tr>
             <td style="padding:22px 24px 0;">
               <span style="display:inline-block; font-size:11px; font-weight:800; letter-spacing:1.6px; text-transform:uppercase; color:${brandPinkDark}; background:#fdf2f8; padding:7px 14px; border-radius:20px; border:1px solid #fce7f3;">New Contact Submission</span>
             </td>
           </tr>
 
-          <!-- ========== TITLE SECTION ========== -->
+          <!-- TITLE -->
           <tr>
             <td style="padding:18px 24px 0;">
-              <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%">
-                <tr>
-                  <td>
-                    <h2 style="margin:0 0 8px; font-size:20px; font-weight:800; color:#0f172a; letter-spacing:-0.4px;">A customer reached out</h2>
-                    <p style="margin:0; font-size:14px; color:${muted}; line-height:1.5;">Details submitted via the Katha contact form.</p>
-                  </td>
-                </tr>
-              </table>
+              <h2 style="margin:0 0 8px; font-size:20px; font-weight:800; color:#0f172a; letter-spacing:-0.4px;">A customer reached out</h2>
+              <p style="margin:0; font-size:14px; color:${muted}; line-height:1.5;">Details submitted via the Katha contact form.</p>
             </td>
           </tr>
 
-          <!-- ========== CUSTOMER DETAILS CARD ========== -->
+          <!-- CUSTOMER DETAILS -->
           <tr>
             <td style="padding:24px;">
               <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%" style="background:#f8fafc; border:1px solid #e2e8f0; border-radius:14px;">
@@ -284,7 +322,7 @@ function buildEmailTemplate({ name, email, subject, message }) {
             </td>
           </tr>
 
-          <!-- ========== MESSAGE SECTION ========== -->
+          <!-- MESSAGE -->
           <tr>
             <td style="padding:0 24px 24px;">
               <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%">
@@ -313,7 +351,7 @@ function buildEmailTemplate({ name, email, subject, message }) {
             </td>
           </tr>
 
-          <!-- ========== DIVIDER ========== -->
+          <!-- DIVIDER -->
           <tr>
             <td style="padding:0 24px;">
               <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%">
@@ -324,7 +362,7 @@ function buildEmailTemplate({ name, email, subject, message }) {
             </td>
           </tr>
 
-          <!-- ========== FOOTER ========== -->
+          <!-- FOOTER -->
           <tr>
             <td style="padding:26px 24px; background:${cardBg};">
               <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%">
@@ -336,7 +374,7 @@ function buildEmailTemplate({ name, email, subject, message }) {
                 <tr>
                   <td align="center" style="padding:0 0 14px;">
                     <p style="margin:0; font-size:12px; color:${muted}; line-height:1.6;">
-                      Kolkata, West Bengal 700039, India<br/>
+                      12/1A/3D Chowbagha Road Bidhan Nagar South Kolkata - 700039, India<br/>
                       <strong>Email:</strong> <a href="mailto:info@techzuno.com" style="color:${brandPinkDark}; text-decoration:none; font-weight:700;">info@techzuno.com</a>
                     </p>
                   </td>
@@ -345,6 +383,127 @@ function buildEmailTemplate({ name, email, subject, message }) {
                   <td align="center" style="padding:0;">
                     <p style="margin:0; font-size:10px; color:#94a3b8; line-height:1.6;">
                       Sent from the Katha contact form &bull; This is an automated notification.<br/>
+                      &copy; ${new Date().getFullYear()} Techzuno Solution OPC Private Limited. All rights reserved.
+                    </p>
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+  </table>
+</body>
+</html>
+  `.trim();
+}
+
+// -----------------------------
+// HTML Email Template (Customer Auto-Reply)
+// -----------------------------
+function buildCustomerReplyTemplate({ name, subject, message }) {
+  const brandPink = '#ec4899';
+  const brandPinkDark = '#be185d';
+  const brandPurple = '#8b5cf6';
+  const darkBg = '#0f172a';
+  const cardBg = '#ffffff';
+  const muted = '#64748b';
+
+  return `
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Thank you for contacting Katha</title>
+</head>
+<body style="margin:0; padding:0; width:100%; background-color:${darkBg}; color:#1e293b; font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,'Helvetica Neue',Arial,sans-serif; -webkit-font-smoothing:antialiased;">
+  <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%">
+    <tr>
+      <td align="center" style="padding:30px 12px;">
+        <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="600" style="max-width:600px; background:${cardBg}; border-radius:20px; overflow:hidden; box-shadow:0 24px 32px -8px rgba(0,0,0,0.12),0 12px 16px -6px rgba(0,0,0,0.06);">
+          
+          <!-- HEADER -->
+          <tr>
+            <td align="center" style="padding:32px 24px 20px; background:${cardBg};">
+              <table role="presentation" cellspacing="0" cellpadding="0" border="0" align="center">
+                <tr>
+                  <td align="center">
+                    <span style="display:inline-block; font-family:'Georgia','Times New Roman',serif; font-size:40px; font-weight:700; color:#112430; letter-spacing:-2px; line-height:1;">Katha</span>
+                    <span style="display:inline-block; font-size:40px; color:#ec4899; line-height:1; margin-left:-6px;">❤</span>
+                  </td>
+                </tr>
+              </table>
+              <p style="margin:8px 0 0; font-size:13px; color:${muted}; font-weight:500; letter-spacing:0.3px;">Real People. Infinite Stories.</p>
+            </td>
+          </tr>
+
+          <!-- Accent Line -->
+          <tr>
+            <td style="padding:0 24px;">
+              <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%">
+                <tr>
+                  <td height="4" style="background:linear-gradient(90deg,${brandPink} 0%,${brandPurple} 100%); font-size:4px; line-height:4px;">&#8202;</td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+
+          <!-- BADGE -->
+          <tr>
+            <td style="padding:22px 24px 0;">
+              <span style="display:inline-block; font-size:11px; font-weight:800; letter-spacing:1.6px; text-transform:uppercase; color:${brandPinkDark}; background:#fdf2f8; padding:7px 14px; border-radius:20px; border:1px solid #fce7f3;">Message Received</span>
+            </td>
+          </tr>
+
+          <!-- CONTENT -->
+          <tr>
+            <td style="padding:18px 24px 20px;">
+              <h2 style="margin:0 0 12px; font-size:22px; font-weight:800; color:#0f172a; letter-spacing:-0.4px;">Hi ${name}, thank you for reaching out!</h2>
+              <p style="margin:0 0 16px; font-size:15px; color:#475569; line-height:1.6;">
+                We have received your message regarding <strong>${subject}</strong>. Our team is already looking into it, and we will get back to you shortly.
+              </p>
+              
+              <!-- Message summary box -->
+              <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%" style="background:#f8fafc; border:1px solid #e2e8f0; border-left:4px solid ${brandPink}; border-radius:10px; margin:16px 0;">
+                <tr>
+                  <td style="padding:16px 20px;">
+                    <p style="margin:0 0 6px; font-size:11px; font-weight:800; color:${muted}; text-transform:uppercase; letter-spacing:0.8px;">A copy of your message:</p>
+                    <p style="margin:0; font-size:14px; line-height:1.6; color:#334155; white-space:pre-wrap;">${message}</p>
+                  </td>
+                </tr>
+              </table>
+
+              <p style="margin:16px 0 0; font-size:14px; color:${muted}; line-height:1.5;">
+                If you have any additional details to share in the meantime, feel free to reply directly to this email.
+              </p>
+            </td>
+          </tr>
+
+          <!-- DIVIDER -->
+          <tr>
+            <td style="padding:0 24px;">
+              <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%">
+                <tr>
+                  <td height="1" style="background:#e2e8f0; font-size:1px; line-height:1px;">&#8202;</td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+
+          <!-- FOOTER -->
+          <tr>
+            <td style="padding:24px; background:${cardBg};">
+              <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%">
+                <tr>
+                  <td align="center">
+                    <p style="margin:0 0 6px; font-size:12px; font-weight:700; color:#0f172a;">Team Katha</p>
+                    <p style="margin:0; font-size:12px; color:${muted}; line-height:1.5;">
+                      Techzuno Solution OPC Private Limited &bull; Kolkata, West Bengal 700039, India<br/>
+                      <a href="mailto:info@techzuno.com" style="color:${brandPinkDark}; text-decoration:none; font-weight:600;">info@techzuno.com</a>
+                    </p>
+                    <p style="margin:12px 0 0; font-size:10px; color:#94a3b8;">
                       &copy; ${new Date().getFullYear()} Techzuno Solution OPC Private Limited. All rights reserved.
                     </p>
                   </td>

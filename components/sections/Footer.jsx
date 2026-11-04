@@ -3,6 +3,7 @@ import Logo from "@/components/ui/Logo";
 import { Icon } from "@iconify/react";
 
 const LINKS = [
+  { label: "Pricing", href: "/pricing" },
   { label: "Privacy", href: "/privacy" },
   { label: "Terms", href: "#terms" },
   { label: "Support", href: "#support" },
