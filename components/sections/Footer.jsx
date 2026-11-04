@@ -19,17 +19,17 @@ export default function Footer() {
         <div>
           <Logo size="lg" imgClassName="h-9 sm:h-12 2xl:h-[52px]" />
           <p className="mt-4 sm:mt-5 text-[11px] text-white/40">
-            &copy; Techzuno Solution OPC Private Limited
+            &copy; 2026 Katha- Techzuno Solution OPC Private Limited
           </p>
         </div>
 
         {/* ---------- links + social ---------- */}
-        <div className="flex flex-col sm:flex-row flex-wrap items-start gap-8 sm:gap-x-16 sm:gap-y-10 md:gap-x-24">
+        <div className="flex flex-row flex-wrap items-start gap-10 sm:gap-16 md:gap-24 md:mr-16 lg:mr-28 xl:mr-44 2xl:mr-64">
           <div>
             <p className="text-[14px] sm:text-[15px] font-semibold text-white">
               Links
             </p>
-            <ul className="mt-4 sm:mt-6 grid grid-cols-3 gap-x-6 gap-y-3 sm:gap-y-4">
+            <ul className="mt-4 sm:mt-6 flex flex-col gap-3 sm:gap-3.5">
               {LINKS.map((link) => (
                 <li key={link.label}>
                   <Link

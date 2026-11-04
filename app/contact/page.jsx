@@ -15,7 +15,7 @@ export default function ContactPage() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-   
+
     setSubmitted(true);
   };
 
@@ -34,7 +34,8 @@ export default function ContactPage() {
             Contact <span className="text-[#ff3d8f]">Us</span>
           </h1>
           <p className="mx-auto mt-4 max-w-[580px] text-[15px] sm:text-[16px] text-white/65 leading-relaxed">
-            Have questions, feedback, or business inquiries? Drop us a line and our team will get back to you shortly.
+            Have questions, feedback, or business inquiries? Drop us a line and
+            our team will get back to you shortly.
           </p>
         </div>
 
@@ -68,7 +69,7 @@ export default function ContactPage() {
                 Address
               </h3>
               <p className="mt-1 text-[14px] text-white/70 leading-relaxed">
-                Kolkata, West Bengal 700039, India
+                12/1A/3D Chowbagha Road Bidhan Nagar South Kolkata - 700039
               </p>
             </div>
 
@@ -82,7 +83,9 @@ export default function ContactPage() {
               <div className="mt-2 space-y-1.5 text-[13px] text-white/70">
                 <p>
                   <span className="text-white/40">Company:</span>{" "}
-                  <span className="text-white font-medium">Techzuno Solution OPC Private Limited</span>
+                  <span className="text-white font-medium">
+                    Techzuno Solution OPC Private Limited
+                  </span>
                 </p>
                 <p>
                   <span className="text-white/40">Owner:</span>{" "}
@@ -90,7 +93,9 @@ export default function ContactPage() {
                 </p>
                 <p>
                   <span className="text-white/40">GST No:</span>{" "}
-                  <span className="text-white font-medium">19AAMCT8152B1Z5</span>
+                  <span className="text-white font-medium">
+                    19AAMCT8152B1Z5
+                  </span>
                 </p>
               </div>
             </div>
@@ -107,7 +112,8 @@ export default function ContactPage() {
                   Message Sent!
                 </h3>
                 <p className="mt-2 max-w-[360px] text-[15px] text-white/60">
-                  Thank you for reaching out. We have received your note and will get back to you shortly.
+                  Thank you for reaching out. We have received your note and
+                  will get back to you shortly.
                 </p>
                 <button
                   type="button"
@@ -120,7 +126,10 @@ export default function ContactPage() {
             ) : (
               <form onSubmit={handleSubmit} className="space-y-6">
                 <div>
-                  <label htmlFor="name" className="block text-[13px] font-medium text-white/80">
+                  <label
+                    htmlFor="name"
+                    className="block text-[13px] font-medium text-white/80"
+                  >
                     Your Name
                   </label>
                   <input
@@ -129,13 +138,18 @@ export default function ContactPage() {
                     required
                     placeholder="e.g. Rahul Sharma"
                     value={formData.name}
-                    onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                    onChange={(e) =>
+                      setFormData({ ...formData, name: e.target.value })
+                    }
                     className="mt-2 w-full rounded-[14px] border border-white/15 bg-white/[0.04] px-4 py-3.5 text-[15px] text-white placeholder-white/30 backdrop-blur-md transition-colors focus:border-[#ff3d8f] focus:outline-none focus:ring-1 focus:ring-[#ff3d8f]"
                   />
                 </div>
 
                 <div>
-                  <label htmlFor="email" className="block text-[13px] font-medium text-white/80">
+                  <label
+                    htmlFor="email"
+                    className="block text-[13px] font-medium text-white/80"
+                  >
                     Your Email
                   </label>
                   <input
@@ -144,13 +158,18 @@ export default function ContactPage() {
                     required
                     placeholder="you@example.com"
                     value={formData.email}
-                    onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                    onChange={(e) =>
+                      setFormData({ ...formData, email: e.target.value })
+                    }
                     className="mt-2 w-full rounded-[14px] border border-white/15 bg-white/[0.04] px-4 py-3.5 text-[15px] text-white placeholder-white/30 backdrop-blur-md transition-colors focus:border-[#ff3d8f] focus:outline-none focus:ring-1 focus:ring-[#ff3d8f]"
                   />
                 </div>
 
                 <div>
-                  <label htmlFor="subject" className="block text-[13px] font-medium text-white/80">
+                  <label
+                    htmlFor="subject"
+                    className="block text-[13px] font-medium text-white/80"
+                  >
                     Subject
                   </label>
                   <input
@@ -159,13 +178,18 @@ export default function ContactPage() {
                     required
                     placeholder="How can we help?"
                     value={formData.subject}
-                    onChange={(e) => setFormData({ ...formData, subject: e.target.value })}
+                    onChange={(e) =>
+                      setFormData({ ...formData, subject: e.target.value })
+                    }
                     className="mt-2 w-full rounded-[14px] border border-white/15 bg-white/[0.04] px-4 py-3.5 text-[15px] text-white placeholder-white/30 backdrop-blur-md transition-colors focus:border-[#ff3d8f] focus:outline-none focus:ring-1 focus:ring-[#ff3d8f]"
                   />
                 </div>
 
                 <div>
-                  <label htmlFor="message" className="block text-[13px] font-medium text-white/80">
+                  <label
+                    htmlFor="message"
+                    className="block text-[13px] font-medium text-white/80"
+                  >
                     Message
                   </label>
                   <textarea
@@ -174,7 +198,9 @@ export default function ContactPage() {
                     required
                     placeholder="Tell us what you're thinking..."
                     value={formData.message}
-                    onChange={(e) => setFormData({ ...formData, message: e.target.value })}
+                    onChange={(e) =>
+                      setFormData({ ...formData, message: e.target.value })
+                    }
                     className="mt-2 w-full rounded-[14px] border border-white/15 bg-white/[0.04] px-4 py-3.5 text-[15px] text-white placeholder-white/30 backdrop-blur-md transition-colors focus:border-[#ff3d8f] focus:outline-none focus:ring-1 focus:ring-[#ff3d8f] resize-none"
                   />
                 </div>

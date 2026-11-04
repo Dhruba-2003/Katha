@@ -65,14 +65,6 @@ export default function Hero() {
                 href={downloadLink}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex w-full sm:w-auto items-center justify-center rounded-full bg-linear-to-r from-[#ff3d8f] via-[#d946ef] to-[#a855f7] px-11 py-2.5 text-[18px] sm:text-[14px] font-medium tracking-[0.02em] text-black uppercase shadow-[0_8px_30px_rgba(217,70,239,0.4)] transition-transform hover:scale-[1.03]"
-              >
-                JOIN US
-              </a>
-              <a
-                href={downloadLink}
-                target="_blank"
-                rel="noopener noreferrer"
                 className="inline-flex w-full sm:w-auto items-center justify-center rounded-full bg-white px-9 py-2.5 text-[18px] sm:text-[14px] font-medium text-black shadow-[0_8px_25px_rgba(255,255,255,0.15)] transition-transform hover:scale-[1.03]"
               >
                 Download App
