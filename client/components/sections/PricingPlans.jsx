@@ -5,8 +5,6 @@ import { Icon } from "@iconify/react";
 
 export default function PricingPlans() {
   const [billingCycle, setBillingCycle] = useState("monthly");
-  const downloadLink =
-    process.env.NEXT_PUBLIC_DOWNLOAD_LINK || "https://playkatha.com";
 
   return (
     <section id="plans" className="relative w-full bg-black py-16 sm:py-24 overflow-hidden">
@@ -175,14 +173,12 @@ export default function PricingPlans() {
 
               {/* Button */}
               <div className="mt-8 pt-4">
-                <a
-                  href={downloadLink}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="block w-full rounded-full border border-white/20 bg-transparent py-3 text-center text-[14px] font-semibold text-white transition-all hover:bg-white/5 hover:border-white/40"
+                <button
+                  type="button"
+                  className="block w-full rounded-full border border-white/20 bg-transparent py-3 text-center text-[14px] font-semibold text-white transition-all hover:bg-white/5 hover:border-white/40 cursor-pointer"
                 >
                   Start Free
-                </a>
+                </button>
               </div>
             </div>
 
@@ -310,14 +306,12 @@ export default function PricingPlans() {
 
               {/* Button */}
               <div className="mt-8 pt-4">
-                <a
-                  href={downloadLink}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="block w-full rounded-full bg-linear-to-r from-[#B54AFF] to-[#FF7D94] py-3 text-center text-[14px] font-semibold text-white shadow-[0_8px_25px_rgba(217,70,239,0.45)] transition-transform hover:scale-[1.02]"
+                <button
+                  type="button"
+                  className="block w-full rounded-full bg-linear-to-r from-[#B54AFF] to-[#FF7D94] py-3 text-center text-[14px] font-semibold text-white shadow-[0_8px_25px_rgba(217,70,239,0.45)] transition-transform hover:scale-[1.02] cursor-pointer"
                 >
                   Get Premium
-                </a>
+                </button>
               </div>
             </div>
 
@@ -455,14 +449,12 @@ export default function PricingPlans() {
 
               {/* Button */}
               <div className="mt-8 pt-4">
-                <a
-                  href={downloadLink}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="block w-full rounded-full border border-white/20 bg-transparent py-3 text-center text-[14px] font-semibold text-white transition-all hover:bg-white/5 hover:border-white/40"
+                <button
+                  type="button"
+                  className="block w-full rounded-full border border-white/20 bg-transparent py-3 text-center text-[14px] font-semibold text-white transition-all hover:bg-white/5 hover:border-white/40 cursor-pointer"
                 >
                   Get Ultimate
-                </a>
+                </button>
               </div>
             </div>
           </div>

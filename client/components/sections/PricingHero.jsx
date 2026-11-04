@@ -6,9 +6,6 @@ import SectionBadge from "@/components/ui/SectionBadge";
 import { Icon } from "@iconify/react";
 
 export default function PricingHero() {
-  const downloadLink =
-    process.env.NEXT_PUBLIC_DOWNLOAD_LINK || "https://playkatha.com";
-
   return (
     <section
       id="hero"
@@ -62,20 +59,20 @@ export default function PricingHero() {
             </p>
 
             <div className="mt-8 flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4 w-full sm:w-auto sm:mt-10">
-              <a
-                href="#plans"
-                className="inline-flex w-full sm:w-auto items-center justify-center gap-2 rounded-full bg-linear-to-r from-[#B54AFF] to-[#FF7D94] px-8 py-3 text-[15px] font-semibold tracking-[0.02em] text-white shadow-[0_8px_30px_rgba(217,70,239,0.45)] transition-all hover:scale-[1.03]"
+              <button
+                type="button"
+                className="inline-flex w-full sm:w-auto items-center justify-center gap-2 rounded-full bg-linear-to-r from-[#B54AFF] to-[#FF7D94] px-8 py-3 text-[15px] font-semibold tracking-[0.02em] text-white shadow-[0_8px_30px_rgba(217,70,239,0.45)] transition-all cursor-pointer hover:scale-[1.02]"
               >
                 <span>Start Free</span>
                 <span className="text-[17px]">&rarr;</span>
-              </a>
+              </button>
 
-              <a
-                href="#plans"
-                className="inline-flex w-full sm:w-auto items-center justify-center rounded-full border border-white/25 bg-white/[0.04] px-7 py-3 text-[15px] font-medium text-white backdrop-blur-md transition-all hover:border-white/50 hover:bg-white/10"
+              <button
+                type="button"
+                className="inline-flex w-full sm:w-auto items-center justify-center rounded-full border border-white/25 bg-white/[0.04] px-7 py-3 text-[15px] font-medium text-white backdrop-blur-md transition-all cursor-pointer hover:border-white/50 hover:bg-white/10"
               >
                 Compare Plans
-              </a>
+              </button>
             </div>
           </div>
         </div>

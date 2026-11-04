@@ -1,5 +1,5 @@
 # Dependencies
-/node_modules
+node_modules
 /.pnp
 .pnp.js
 
@@ -9,7 +9,7 @@
 .trae/
 
 # Next.js
-/.next/
+.next/
 /out/
 
 # Production
@@ -30,6 +30,7 @@ yarn-error.log*
 .env.local
 .env.development.local
 .env.production.local
+*.local
 
 # Vercel
 .vercel
