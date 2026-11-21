@@ -5,9 +5,13 @@ import { Icon } from "@iconify/react";
 const LINKS = [
   { label: "Pricing", href: "/pricing" },
   { label: "Privacy", href: "/privacy" },
-  { label: "Terms", href: "#terms" },
-  { label: "Support", href: "#support" },
-  { label: "Report", href: "#report" },
+  { label: "Refund & Cancellation", href: "/refund-and-cancellation" },
+  { label: "Terms", href: "/terms" },
+  {
+    label: "Support",
+    href: "mailto:info@techzuno.com?subject=Katha%20Support%20Inquiry",
+  },
+  { label: "Report", href: "/report" },
   { label: "Contact Us", href: "/contact" },
   { label: "About", href: "/about" },
 ];
@@ -33,12 +37,21 @@ export default function Footer() {
             <ul className="mt-4 sm:mt-6 flex flex-col gap-3 sm:gap-3.5">
               {LINKS.map((link) => (
                 <li key={link.label}>
-                  <Link
-                    href={link.href}
-                    className="whitespace-nowrap text-[13px] sm:text-[13.5px] text-white/55 transition-colors hover:text-white"
-                  >
-                    {link.label}
-                  </Link>
+                  {link.href.startsWith("mailto:") ? (
+                    <a
+                      href={link.href}
+                      className="whitespace-nowrap text-[13px] sm:text-[13.5px] text-white/55 transition-colors hover:text-white"
+                    >
+                      {link.label}
+                    </a>
+                  ) : (
+                    <Link
+                      href={link.href}
+                      className="whitespace-nowrap text-[13px] sm:text-[13.5px] text-white/55 transition-colors hover:text-white"
+                    >
+                      {link.label}
+                    </Link>
+                  )}
                 </li>
               ))}
             </ul>

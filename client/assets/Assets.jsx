@@ -12,7 +12,7 @@
  * file name (or update the import below) and the whole site updates.
  * ------------------------------------------------------------------ */
 
-import HeroBgImage from "./images/HeroBgImage.png";
+import HeroBgImage from "./images/herobg.jpeg";
 import ExperienceBg from "./images/ExperienceBg.png";
 import ExperienceRightMockup from "./images/ExperienceRightMockup.png";
 import QrCode from "./images/qr-code1.jpeg";
