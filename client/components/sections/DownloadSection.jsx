@@ -60,7 +60,7 @@ export default function DownloadSection() {
           </div>
 
           {/* ---------- right artwork (mobile / tablet) ---------- */}
-          <div className="mt-8 sm:mt-12 w-full flex justify-center xl:hidden">
+          <div className="mt-8 sm:mt-12 w-full flex justify-center xl:hidden ">
             <Image
               src={Assets.DownloadRight}
               alt=""
